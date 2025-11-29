@@ -1,0 +1,13 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+pytest_cache
+.coverage
+.tox
+.DS_Store
+.git
+.github
+README.md
