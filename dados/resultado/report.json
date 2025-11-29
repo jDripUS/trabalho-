@@ -1,0 +1,48 @@
+{
+  "input_file": "D:\\documents\\Repositórios\\trabalho-\\dados\\usuarios.csv",
+  "total_rows": 6,
+  "valid_rows": 4,
+  "invalid_rows": 2,
+  "invalid_details": [
+    {
+      "index": 2,
+      "row": {
+        "id": 3,
+        "name": "Pedro Oliveira",
+        "email": "pedro@example.com",
+        "age": "abc"
+      },
+      "errors": [
+        {
+          "type": "int_parsing",
+          "loc": [
+            "age"
+          ],
+          "msg": "Input should be a valid integer, unable to parse string as an integer",
+          "input": "abc",
+          "url": "https://errors.pydantic.dev/2.12/v/int_parsing"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "row": {
+        "id": 5,
+        "name": "Carlos",
+        "email": "carlos@example.com",
+        "age": NaN
+      },
+      "errors": [
+        {
+          "type": "finite_number",
+          "loc": [
+            "age"
+          ],
+          "msg": "Input should be a finite number",
+          "input": NaN,
+          "url": "https://errors.pydantic.dev/2.12/v/finite_number"
+        }
+      ]
+    }
+  ]
+}
