@@ -3,12 +3,6 @@ name: Build and Push Docker Image
 on:
   push:
     tags: ['v*.*.*']
-  release:
-    types: [published]
-  workflow_dispatch:
-
-env:
-  REGISTRY: ghcr.io
 
 jobs:
   build-and-push:
@@ -27,35 +21,17 @@ jobs:
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Clean repository name
-        id: clean-name
-        run: |
-          CLEAN_NAME=$(echo "${{ github.repository }}" | sed 's/-$//')
-          echo "CLEAN_NAME=$CLEAN_NAME" >> $GITHUB_OUTPUT
-          echo "Cleaned repository name: $CLEAN_NAME"
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ steps.clean-name.outputs.CLEAN_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=sha
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ghcr.io/jdripus/trabalho:latest
+            ghcr.io/jdripus/trabalho:${{ github.ref_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
