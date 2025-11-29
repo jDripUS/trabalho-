@@ -2,21 +2,19 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Instala dependências do sistema e PDM
-RUN apt-get update && apt-get install -y \
-    gcc \
-    && rm -rf /var/lib/apt/lists/* \
-    && pip install pdm
+# Instala dependências do sistema necessárias
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copia arquivos de configuração
-COPY pyproject.toml ./
+# Copia requirements primeiro (para cache eficiente)
+COPY requirements.txt .
 
-# Tenta instalar com PDM, se falhar usa pip como fallback
-RUN pdm install --prod --no-lock || pip install -r requirements.txt || pip install pandas matplotlib fpdf
+# Instala dependências Python
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia código fonte
+# Copia todo o código fonte
 COPY src/ ./src/
 COPY data/ ./data/
 
-# Comando padrão
-CMD ["python", "-m", "csv_analyzer"]
+# Define o comando padrão
+CMD ["python", "-c", "import src.csv_analyzer; src.csv_analyzer.main()"]
