@@ -1,5 +1,7 @@
 Projeto simples para ler e validar um CSV de usuários.
 
+Esse trabalho foi realizado por Heitor Ricardo, João Hector e Vinicius
+
 Resumo
 - Entrada: arquivo CSV (obrigatório).
 - Saída: diretório com valid.csv (linhas válidas) e report.json (relatório).
